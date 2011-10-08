@@ -1,0 +1,38 @@
+
+11/10/2000
+----------
+
++ Rewrote request handler and filename creation routines
+
++ Fixed content-type handling bug (comparison was reversed)
+
++ Server now chdir()'s to DOCUMENT_ROOT on startup rather than
+	having to splice it with the GET URL on every request.
+
+11/9/2000
+---------
+
++ Syntactic cleanups
+
++ Changed license from GPL to public domain
+
+9/3/2000
+--------
+
++ Replaced strncasecmp with internal (portable) streq_case function
+
++ Cached strlen of DOCUMENT_ROOT
+ 
+
+9/1/2000
+--------
+
++ Replaced COPYING with a URL
+
++ Added minimal HTTP handling. Returns an HTTP OK header if the client
+	specifies GET foo HTTP, along with Content-type: foo/bar
+
++ Added content table handler. Only returns documents that it understands
+	the type of, in light of absent security features like .htaccess.
+	Also allows for accurate Content-type header
+

@@ -1,0 +1,90 @@
+
+Installation:
+-------------
+
+Edit config.h
+
+Type make
+
+Find out what you want to do with it from there.
+
+If you have problems compiling, write us (contact information below).
+
+
+IM-HTTPD:
+---------
+
+im-httpd fills our need for a small and lightning fast http server. It
+is effectively feature free. Luxuries like directory indexing or transfer
+logging do not exist.
+
+The server remains a single process throughout it's life. It has no config
+file parsing. It has no command line options. It does not thread. It
+goes to great lengths to simply read the HTTP request and send back the
+file, with minimal fuss/logic in between.
+
+Situations where im-httpd is ideal:
+
+	+ Fast low-resource low-overhead small-file serving. For requests
+	like this, something like Apache has far too much overhead.
+	
+	+ You need a barebones http server that is relatively easy to
+	understand that you can modify for your needs with minimal
+	effort.
+
+	+ You're using an embedded system and can't afford to
+	spare more than 7k of memory for an http server.
+
+Situations where im-httpd might be bad:
+
+	+ Large-fast-file serving. There are far too many interrupts involved
+	to make large-fast-file serving efficient. If you anticipate
+	serving lots of huge files (like mp3s), you'd probably do good
+	to increase the buffer size in config.h  -- on the other hand,
+	large-slow-file serving, for serving to modem users, for example
+	would be ideal because the client would be the bottleneck.
+
+	+ Environments which require auditing. You can easily add
+	transfer logging, but it does not come out of the box.
+
+Q. Uh, why not just use thttpd?
+A. I tried deploying thttpd once, and it had far too many
+	"for-your-own-good" security features that I was
+	not able to appreciate. I assumed I wasn't the
+	only one so I decided to write im-httpd. It's also
+	been a fun experiment.
+
+Q. What about khttpd?
+A. If you feel comfortable with khttpd, then by all means!
+	I'm not comfortable with khttpd and we also aren't a 100% Linux shop.
+	Also, khttpd is implemented in quite a sizable chunk of code.
+
+Q. Uhm, are you insane? Couldn't you at least put in feature Z?
+A. Do it yourself or find another http server! I will of course
+	listen to suggestions, but unless they make absolute perfect
+	sense and impose almost zero overhead and minor memory
+	footprint, don't expect me to put it in!
+
+Q. Not even directory indexing?
+A. No.
+
+Q. Why not?!?
+A. Ok, we clearly don't agree here. This is not the http server you
+	want. Try thttpd. It's pretty cool.
+
+Q. I can't seem to download certain files
+A. Make sure the file has a recognized file extension, check content_type.h
+
+Q. The server isn't working for some reason and I can't figure out why..
+A. Try tracing the running process: man ktrace|truss|strace
+
+See config.h for extensive configuration options including the
+Document Root, Port, and other goodies..
+
+
+Questions? Comments?
+
+Michael Bacarella
+mike@bacarella.com
+http://m.bacarella.com/
+
