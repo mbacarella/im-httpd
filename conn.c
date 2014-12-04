@@ -229,6 +229,9 @@ static int sendfile(conn_t *c)
 	int	bc, bs;
 
 	lseek(c->fd, c->foff, SEEK_SET);
+	/* FIXME: A potential inefficiency: if the block-size is much larger than the amount
+           we can write to the client without blocking, we'll end up re-reading the same data
+           over and over again.  In practice this doesn't seem terrible.  Hmmm. */
 	while ((bc = read(c->fd, buf, BLOCK_SIZE)) == -1) {
 		if (errno != EINTR) {
 			if (errno == EWOULDBLOCK)
@@ -239,7 +242,7 @@ static int sendfile(conn_t *c)
 	}
 	if (bc == 0)	/* hooray! eof! */
 		return 1;
-
+	
 	while ((bs = write(c->sd, buf, bc)) == -1) {
 		if (errno != EINTR) {
 			if (errno == EWOULDBLOCK)
